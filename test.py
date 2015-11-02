@@ -2,20 +2,25 @@ import poplib
 import win32api
 import win32process
 import time
-email = '996825244@qq.com'
-host = 'pop.qq.com'
-port = '995'
+config = []
 try:
     f = open('config.ini','r')
+except IOError:
+    print "open config failed"
+for lines1 in f.readlines():
+    config.append(lines1.split()[1])
+f.close()
+try:
+    f = open('config1.ini','r')
 except IOError:
     print "open config failed"
 password = f.read().split()[1]
 f.close()
 
-server = poplib.POP3_SSL(host)
+server = poplib.POP3_SSL(config[1])
 server.set_debuglevel(0)
 print server.welcome
-server.user(email)
+server.user(config[0])
 server.pass_(password)
 
 print('Messages: %s. Size: %s' % server.stat())
